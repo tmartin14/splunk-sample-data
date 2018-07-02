@@ -1,0 +1,8 @@
+{
+  "apache:access": "apache.access.log",
+  "apache:error": "apache.error.log",
+  "secure.log": "apache.secure.log",
+  "df": "os-df",
+  "ps": "os-ps",
+  "dynatrace:entity": "dynatrace.entity.log"
+}
