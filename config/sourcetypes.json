@@ -4,5 +4,5 @@
   "secure.log": "apache.secure.log",
   "df": "os-df",
   "ps": "os-ps",
-  "dynatrace:entity": "dynatrace.entity.log"
+  "dynatrace:entity": "dynatrace.entity.json"
 }
