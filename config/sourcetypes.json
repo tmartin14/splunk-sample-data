@@ -1,4 +1,5 @@
 {
+  "access_combined": "apache.access.log",
   "apache:access": "apache.access.log",
   "apache:error": "apache.error.log",
   "secure.log": "apache.secure.log",
