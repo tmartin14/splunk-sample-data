@@ -1,25 +1,26 @@
-[ {
-     "sourcetype":"access_combined",
-     "filename": "apache.access.log"
+[
+  {
+    "sourcetype": "access_combined",
+    "filename": "apache.access.log"
   },
   {
-     "sourcetype":"apache:error",
-     "filename": "apache.error.log"
+    "sourcetype": "apache:error",
+    "filename": "apache.error.log"
   },
   {
-     "sourcetype":"secure.log",
-     "filename": "apache.secure.log"
+    "sourcetype": "secure.log",
+    "filename": "apache.secure.log"
   },
   {
-     "sourcetype":"df",
-     "filename": "os-df.txt"
+    "sourcetype": "df",
+    "filename": "os-df.txt"
   },
   {
-     "sourcetype":"ps",
-     "filename": "os-ps.txt"
+    "sourcetype": "ps",
+    "filename": "os-ps.txt"
   },
   {
-     "sourcetype":"dynatrace:entity",
-     "filename": "dynatrace.entity.json"
+    "sourcetype": "dynatrace:entity",
+    "filename": "dynatrace.entity.json"
   }
 ]
