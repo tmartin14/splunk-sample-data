@@ -1,26 +1,32 @@
 [
   {
     "data_sourcetype": "access_combined",
-    "sample_filename": "apache.access.log"
+    "sample_filename": "apache.access.log",
+    "parse_method":"line"
   },
   {
     "data_sourcetype": "apache:error",
-    "sample_filename": "apache.error.log"
+    "sample_filename": "apache.error.log",
+    "parse_method":"line"
   },
   {
     "data_sourcetype": "secure.log",
-    "sample_filename": "apache.secure.log"
+    "sample_filename": "apache.secure.log",
+    "parse_method":"line"
   },
   {
     "data_sourcetype": "df",
-    "sample_filename": "os-df.txt"
+    "sample_filename": "os-df.txt",
+    "parse_method":"line"
   },
   {
     "data_sourcetype": "ps",
-    "sample_filename": "os-ps.txt"
+    "sample_filename": "os-ps.txt",
+    "parse_method":"line"
   },
   {
     "data_sourcetype": "dynatrace:entity",
-    "sample_filename": "dynatrace.entity.json"
+    "sample_filename": "dynatrace.entity.json",
+    "parse_method":"line"
   }
 ]
