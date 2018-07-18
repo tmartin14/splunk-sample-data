@@ -34,4 +34,10 @@
     "sample_filename": "dynatrace.entity.json",
     "parse_method":"line"
   }
+  {
+    "data_sourcetype": "rum",
+    "sample_filename": "boomerang.js.events",
+    "parse_method":"line"
+  }
+
 ]
