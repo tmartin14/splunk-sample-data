@@ -1,5 +1,10 @@
 [
   {
+    "data_sourcetype": "quick_test",
+    "sample_filename": "quick_test.log",
+    "parse_method":"line"
+  },
+  {
     "data_sourcetype": "access_combined",
     "sample_filename": "apache.access.log",
     "parse_method":"line"
