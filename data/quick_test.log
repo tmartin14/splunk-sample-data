@@ -1,0 +1,20 @@
+01 Mon Jun 28 2018 00:15:01 www1 sshd[5375]: Failed password for invalid user ventrilo from 65.19.167.94 port 3731 ssh2
+02 Mon Jun 28 2018 00:15:01 www1 sshd[84972]: pam_unix(sshd:session): session opened for user djohnson by (uid=0)
+03 Mon Jun 28 2018 00:15:01 www1 sshd[4878]: Failed password for invalid user helpdesk from 65.19.167.94 port 3118 ssh2
+04 Mon Jun 28 2018 00:15:01 www1 sshd[1006]: Failed password for invalid user administrator from 128.241.220.82 port 3409 ssh2
+05 Mon Jun 28 2018 00:15:01 www1 sshd[2445]: Failed password for mail from 128.241.220.82 port 3434 ssh2
+06 Mon Jun 28 2018 00:15:01 www1 sshd[1505]: Failed password for invalid user proxy from 128.241.220.82 port 1715 ssh2
+07 Mon Jun 28 2018 00:15:01 www1 sudo: djohnson ;  TTY=pts/0 ; PWD=/home/djohnson ; USER=root ; COMMAND=/bin/su
+08 Mon Jun 28 2018 00:15:01 www1 sshd[5635]: Failed password for invalid user mailman from 128.241.220.82 port 1128 ssh2
+09 Mon Jun 28 2018 00:15:01 www1 sshd[5593]: Failed password for nagios from 128.241.220.82 port 3730 ssh2
+10 Mon Jun 28 2018 00:15:01 www1 sshd[4851]: Failed password for invalid user mailman from 128.241.220.82 port 1760 ssh2
+11 Mon Jun 28 2018 00:15:01 www1 sshd[3144]: Failed password for invalid user oracle from 128.241.220.82 port 2085 ssh2
+12 Mon Jun 28 2018 00:15:01 www1 sshd[76040]: failed password for djohnson from 10.3.10.46 port 3834 ssh2
+13 Mon Jun 28 2018 00:15:01 www1 sshd[1947]: Failed password for invalid user fpass from 128.241.220.82 port 3084 ssh2
+14 Mon Jun 28 2018 00:15:01 www1 sshd[3267]: Failed password for invalid user info from 223.205.219.198 port 2103 ssh2
+15 Mon Jun 28 2018 00:15:01 www1 sshd[1044]: Failed password for gopher from 223.205.219.198 port 2675 ssh2
+16 Mon Jun 28 2018 00:15:01 www1 sshd[2025]: Failed password for invalid user agushto from 223.205.219.198 port 2177 ssh2
+17 Mon Jun 28 2018 00:15:01 www1 sudo: nsharpe ;  TTY=pts/0 ; PWD=/home/nsharpe ; USER=root ; COMMAND=/bin/su
+18 Mon Jun 28 2018 00:15:01 www1 sshd[3392]: Failed password for invalid user mysql from 223.205.219.198 port 1418 ssh2
+19 Mon Jun 28 2018 00:15:01 www1 sshd[1404]: Failed password for invalid user perl from 223.205.219.198 port 3610 ssh2
+20 Mon Jun 28 2018 00:15:01 www1 sshd[4681]: Failed password for ncsd from 223.205.219.198 port 4830 ssh2
