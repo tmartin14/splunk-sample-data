@@ -1,0 +1,43 @@
+<dashboard script="sample_data.js">
+  <label>Sample Data</label>
+  <description>Use this dashboard to load samples of specific sourcetypes that you would like to query and examine in Splunk.   All data for this application will be placed in a "sampledata" index.</description>
+  <row>
+    <panel>
+      <title>Select an available sample data set and load/reload that data into your Splunk server</title>
+      <html>
+        <table border="0" cellpadding="10">
+          <tr>
+            <td valign="top">
+              <div id="sourcetypes"/>
+            </td>
+            <td valign="top">
+              <div id="button_insert"/>
+            </td>
+            <td valign="top">
+              <div id="button_delete"/>
+            </td>
+            <td valign="top">
+              <div id="setButton"/>
+            </td>
+            <td align="right" valign="top">
+              <div id="status"/>
+            </td>
+          </tr>
+        </table>
+       </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Currently Loaded Sample Data</title>
+      <table>
+        <search id="mySearch">
+          <query/>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>

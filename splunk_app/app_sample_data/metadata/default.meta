@@ -1,0 +1,54 @@
+
+# Application-level permissions
+
+[]
+access = read : [ * ], write : [ admin, power ]
+
+### EVENT TYPES
+
+[eventtypes]
+export = system
+
+
+### PROPS
+
+[props]
+export = system
+
+
+### TRANSFORMS
+
+[transforms]
+export = system
+
+
+### LOOKUPS
+
+[lookups]
+export = system
+
+
+### VIEWSTATES: even normal users should be able to create shared viewstates
+
+[viewstates]
+access = read : [ * ], write : [ * ]
+export = system
+
+[views/data_viewer]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.1.0
+modtime = 1531950916.207810000
+
+[nav/default]
+version = 7.1.0
+modtime = 1531951033.478648000
+
+[views/sample_data]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 7.1.0
+modtime = 1531951495.281731000
+

@@ -1,0 +1,9 @@
+<nav search_view="search">
+  <view name="sample_data" default='true' />
+<!--  <view name="data_viewer" />   -->
+  <view name="search"  />
+  <view name="datasets" />
+  <view name="reports" />
+  <view name="alerts" />
+  <view name="dashboards" />
+</nav>

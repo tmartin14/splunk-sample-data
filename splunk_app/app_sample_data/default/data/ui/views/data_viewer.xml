@@ -1,0 +1,39 @@
+<form>
+  <label>View Data</label>
+  <description>View Sample Data</description>
+  <fieldset submitButton="false">
+    <input type="dropdown" token="sourcetype" searchWhenChanged="true">
+      <label>Sourcetypes</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <initialValue>*</initialValue>
+      <fieldForLabel>sourcetype</fieldForLabel>
+      <fieldForValue>sourcetype</fieldForValue>
+      <search>
+        <query>index=sampledata | stats values(sourcetype) as sourcetype | mvexpand sourcetype</query>
+        <earliest>0</earliest>
+        <latest></latest>
+      </search>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <input type="time" token="myTime">
+        <label>Time</label>
+        <default>
+          <earliest>-7d@h</earliest>
+          <latest>now</latest>
+        </default>
+      </input>
+      <event>
+        <title>Sample Data</title>
+        <search>
+          <query>index=sampledata sourcetype="$sourcetype$"</query>
+          <earliest>$myTime.earliest$</earliest>
+          <latest>$myTime.latest$</latest>
+        </search>
+        <option name="list.drilldown">none</option>
+      </event>
+    </panel>
+  </row>
+</form>
