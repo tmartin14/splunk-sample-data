@@ -1,0 +1,6 @@
+[Fri Sep 09 10:42:29.902022 2011] [core:error] [pid 35708:tid 4328636416] [client ##SRC_IP##] File does not exist: /usr/local/apache2/htdocs/favicon.ico
+[Thu May 12 08:28:57.652118 2011] [core:error] [pid 8777:tid 4326490112] [client ::1:58619] File does not exist: /usr/local/apache2/htdocs/favicon.ico
+[Tue Apr 26 00:05:27 2016] [error] [client ##SRC_IP##] File does not exist: /var/www/html/favicon.ico
+[Sat May 07 15:08:48.949444 2016] [authz_core:error] [pid 23113] [client ##SRC_IP##:53927] AH01630: client denied by server configuration: /Library/WebServer/Documents/server-status
+[Sat May 07 15:08:20.509899 2016] [authz_host:error] [pid 23078] [client ##SRC_IP##:53921] AH01753: access check of 'localhost' to /server-status failed
+[Tue May 03 20:50:38 2016] [error] [client ##SRC_IP##] client denied by server configuration: /var/www/html/server-status
