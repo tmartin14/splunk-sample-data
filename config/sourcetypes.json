@@ -10,6 +10,11 @@
     "parse_method":"line"
   },
   {
+    "data_sourcetype": "apache:access",
+    "sample_filename": "apache.access.log",
+    "parse_method":"line"
+  },
+  {
     "data_sourcetype": "apache:error",
     "sample_filename": "apache.error.log",
     "parse_method":"line"
