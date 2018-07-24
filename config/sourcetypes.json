@@ -18,6 +18,10 @@
     "data_sourcetype": "apache:error",
     "sample_filename": "apache.error.log",
     "parse_method":"line"
+  }, {
+    "data_sourcetype": "apache_error",
+    "sample_filename": "apache.error.log",
+    "parse_method":"line"
   },
   {
     "data_sourcetype": "secure.log",
