@@ -6,7 +6,7 @@
   },
   {
     "data_sourcetype": "access_combined",
-    "sample_filename": "apache.access.log",
+    "sample_filename": "apache.access_combined.log",
     "parse_method":"line"
   },
   {

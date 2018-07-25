@@ -1,0 +1,45 @@
+Notes about apache access logs.  
+1.  Splunk Enterprise includes a "pre-trained" sourceytpe labeled access_combined for default apache access logs.
+2.  The Splunk Add-On for Apache includes a different sourcetype labeled access:apache for apache access logs.
+
+While these 2 formats are VERY similar, they are slightly different and the Add-On version includes a couple additional fields (server name & port).  
+The specifc LogFormats are as follows:
+   Sourcetype:      LogFormat expectation
+      TA:           LogFormat "%h %v %l %u %{local}p %t \"%r\" \"%q\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O %D" combined    <-- requires "LoadModule logio_module libexec/apache2/mod_logio.so" 
+      Pretrained:   LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+
+
+
+Add-On Sample:   apache:access
+LogFormat "%h %v %l %u %{local}p %t \"%r\" \"%q\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O %D" combined
+
+192.168.0.120 127.0.0.1 - - 80 [23/Jul/2018:15:50:01 -0400] "GET / HTTP/1.1" "" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36" 493 227 671
+192.168.0.120 127.0.0.1 - - 80 [23/Jul/2018:15:49:59 -0400] "GET / HTTP/1.1" "" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36" 492 228 686
+
+
+Pre-Trained:   access_combined
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O %D" combined
+
+97.92.123.199 - rmillsj [03/Jul/2018 14:49:45:882515] "GET /login?JSESSIONID=8E924EF1F4EF HTTP/1.1" "?JSESSIONID=8E924EF1F4EF" 200 672 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML; like Gecko) Chrome/29.0.1547.76 Safari/537.36" 187 4137 308054
+106.158.196.201 - tcarroll12 [03/Jul/2018 14:49:45:882515] "POST /orderstatus?JSESSIONID=E18E5EFFA1FF HTTP/1.1" "?JSESSIONID=E18E5EFFA1FF" 200 375 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:24.0) Gecko/20100101 Firefox/24.0" 190 4074 262751
+
+
+%b	Size of response in bytes
+%h	Remote hostname or IP adddress
+%l	Remote logname. This will return a dash unless mod_ident is present and IdentityCheck is set On.
+%p	Port
+%q	The query string
+%r	First line of request
+%s	Status
+%t	Time the request was received
+%u	Remote user if the request was authenticated
+%v	ServerName serving this request
+
+%I	Bytes received
+%O	Bytes sent
+%D	The time taken to serve the request, in microseconds.
+
+
+All LogFormat flags can be found here:
+https://httpd.apache.org/docs/current/mod/mod_log_config.html
+
