@@ -15,6 +15,7 @@ var sourcetype_items;
 //   variables to ensure synchronous processing of function calls
 var urlComplete = $.Deferred();
 var insertComplete = $.Deferred();
+var execSearchComplete = $.Deferred();
 
 // retrieve all available sample sourcetypes
 queryAJAX(base_url + "config/sourcetypes.json");
@@ -35,10 +36,11 @@ $.when(urlComplete).then(function(){
 
     $("#sourcetypes").change(function(event){
         var st = $(event.target).find(':selected').text()
-        execSearch( "index=sampledata sourcetype=\"" + st + "\"" + "| table sourcetype _time _raw | head 500");
+        execSearch( "index=sampledata sourcetype=\"" + st + "\"" + " | table sourcetype _time _raw | head 100");
         setStatus(" ")
 
     })
+    execSearch('index=sampledata | stats values(sourcetype) as "sourcetype" | mvexpand "sourcetype"');
 })
 
 
@@ -50,8 +52,8 @@ $.when(urlComplete).then(function(){
 //  DELETE Button
 $("#button_delete").html($("<button class=\"btn btn-primary\">Delete Data</button>").click(function() {
     var st = $("#sourcetypes").find(':selected').text();
-    execSearch("index=sampledata sourcetype=\"" + st + "\"" + "| delete");
-    setStatus(st + " data deleted.")
+    execSearch("index=sampledata sourcetype=\"" + st + "\"" + " | delete");
+    setStatus("<b>" +st + "</b> data deleted.")
     console.log("DELETE:  Deleted " + st + " data.");
 }))
 
@@ -65,20 +67,31 @@ $("#button_insert").html($("<button class=\"btn btn-primary\">Insert Data</butto
     var st = $("#sourcetypes").find(':selected').text();
 
     // go get the sample data
-    setStatus("Retrieving " + st + " data...")
+    setStatus("Retrieving <b>" + st + "</b> data...")
     queryAJAX(base_url + "data/" + getSampleFilename(st));
     $.when(urlComplete).then(function(){
-        setStatus("<blink>Inserting " + st + " data.  Please be patient...</blink>")
+        setStatus("Inserting <b>" + st + "</b> data.  Please be patient...")
         // insert the data into our index
         insertData("sampledata", payload, st);
-        console.log("INSERT:  Added " + st + " data.");
+        $.when(insertComplete).then(function(){
+            console.log("INSERT:  Added " + st + " data.");
+            // now refresh the table
+            execSearch("index=sampledata sourcetype=\"" + st + "\"" + " | table sourcetype _time _raw | head 100");  
+        })
     })
-    $.when(insertComplete).then(function(){
-        // now refresh the table
-        execSearch("index=sampledata sourcetype=\"" + st + "\"" + "| table sourcetype _time _raw");  
-    })
+
 }))
 
+$("#button_summary").html($("<button class=\"btn btn-primary\">What's Loaded</button>").click(function() {
+    execSearch('index=sampledata | stats values(sourcetype) as "sourcetype" | mvexpand "sourcetype"');
+    setStatus("running search...")
+}))
+
+$("#button_search").html($("<button class=\"btn btn-primary\">Search</button>").click(function() {
+    var spl = $("#spl").val();
+    execSearch(spl);
+    setStatus("running search...")
+}))
 
 //-------------------------------------------------------------------------------------
 //    Add status component - sometimes an insert can take a looooooong time...
@@ -87,6 +100,14 @@ function setStatus(msg){
     $("#status").html($("<p>" + msg + "</p>"));
 }
 
+//-------------------------------------------------------------------------------------
+//    Add searchText component to enable random searches from this page
+//-------------------------------------------------------------------------------------
+function setSearchText(spl){
+    $("#searchText").html($('<label for="spl">Or just enter a search below</label><textarea id="spl" name="spl" rows="1" style="margin: 0px; width:800px; height: 30px;">' + spl + "</textarea>"));
+}
+
+setSearchText("index=sampledata | head 100");
 
 
 
@@ -139,7 +160,8 @@ function execSearch(spl){
         console.log(myResults.data().rows.length);
         setStatus( myResults.data().rows.length + " events retrieved.");
     });
-   
+    setSearchText(spl);
+    execSearchComplete.resolve();
 }
 
 
@@ -190,7 +212,6 @@ function insertData(indexName, data, sourcetypeName){
                             //console.log("INSERT:  Submitted event: ", result);
                         });
                 }
-                setStatus("Inserted "+  items.length + " events for " + sourcetypeName );
                 break;
             default:
                 console.log("INSERT:  parsing as line");
@@ -206,10 +227,9 @@ function insertData(indexName, data, sourcetypeName){
                         emptyLines++;
                     }
                 }
-                setStatus("Inserted events for " + sourcetypeName +". Refreshing index & running search. Stand by...");
         } 
         insertComplete.resolve();
-        setStatus("Inserted events for " + sourcetypeName +".");     
+        setStatus("Inserted events for <b>" + sourcetypeName +"</b>. Refreshing index & running search. Please stand by...");    
     });
 }
 

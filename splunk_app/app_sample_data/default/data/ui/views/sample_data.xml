@@ -17,16 +17,19 @@
               <div id="button_delete"/>
             </td>
             <td valign="top">
-              <div id="setButton"/>
+              <div id="button_summary"/>
             </td>
-            <td align="right" valign="top">
+            <td align="right" valign="center">
               <div id="status"/>
             </td>
           </tr>
         </table>
+        <div id="searchText"/>
+        <div id="button_search"/>
        </html>
     </panel>
   </row>
+
   <row>
     <panel>
       <title>Currently Loaded Sample Data</title>

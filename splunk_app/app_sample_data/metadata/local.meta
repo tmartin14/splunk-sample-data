@@ -1,0 +1,10 @@
+[savedsearches/apache_access_conversion_to_access_combined]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 7.1.2
+modtime = 1532548785.157956000
+
+[views/sample_data]
+version = 7.1.2
+modtime = 1532701232.834403000
