@@ -3,6 +3,23 @@
   <description>Use this dashboard to load samples of specific sourcetypes that you would like to query and examine in Splunk.   All data for this application will be placed in a "sampledata" index.</description>
   <row>
     <panel>
+      <title>Sample Data Location</title>
+      <html>
+        <table border="0" cellpadding="10">
+          <tr>
+            <td valign="top">
+              <div id="repoText"/>
+            </td>
+            <td valign="bottom">
+              <div id="button_repo"/>
+            </td>
+          </tr>
+        </table>
+       </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
       <title>Select an available sample data set and load/reload that data into your Splunk server</title>
       <html>
         <table border="0" cellpadding="10">
@@ -24,12 +41,19 @@
             </td>
           </tr>
         </table>
-        <div id="searchText"/>
-        <div id="button_search"/>
+        <table border="0" cellpadding="10">
+          <tr>
+            <td valign="top">
+              <div id="searchText"/>
+            </td>
+            <td valign="bottom">
+              <div id="button_search"/>
+            </td>
+          </tr>
+        </table>
        </html>
     </panel>
   </row>
-
   <row>
     <panel>
       <title>Currently Loaded Sample Data</title>

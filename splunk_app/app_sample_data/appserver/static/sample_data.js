@@ -4,7 +4,8 @@
 //
 
 
-var base_url = "https://raw.githubusercontent.com/tmartin14/splunk-sample-data/master/";
+//var base_url = "https://raw.githubusercontent.com/tmartin14/splunk-sample-data/master/";
+var base_url = "https://raw.githubusercontent.com/splunk/Essentials_Demo_Data/master/";
 var splunkWebHttp = new splunkjs.SplunkWebHttp();
 var service = new splunkjs.Service(splunkWebHttp);
 var indexes = service.indexes();
@@ -19,95 +20,113 @@ var execSearchComplete = $.Deferred();
 
 // retrieve all available sample sourcetypes
 queryAJAX(base_url + "config/sourcetypes.json");
-
+loadRepo();
 
 //-------------------------------------------------------------------------------------
 //   Create the UI elements of the dashboard  (dropdown, insert button, delete button)
 //-------------------------------------------------------------------------------------
-//    Create the HTML dropdown list of available sourcetypes from github
-//-------------------------------------------------------------------------------------
-$.when(urlComplete).then(function(){
-    var options = '';
-    items = JSON.parse(sourcetype_items);
-    for (var i = 0; i < items.length; i++) {
-        options += '<option value="' + items[i].sample_filename + '">' + items[i].data_sourcetype + '</option>';
-    }
-    $("#sourcetypes").append($('<select id="st"><option value="" disabled="disabled" selected="selected">Please select...</option>' +  options + '</select>'));
-
-    $("#sourcetypes").change(function(event){
-        var st = $(event.target).find(':selected').text()
-        execSearch( "index=sampledata sourcetype=\"" + st + "\"" + " | table sourcetype _time _raw | head 100");
-        setStatus(" ")
-
-    })
-    execSearch('index=sampledata | stats values(sourcetype) as "sourcetype" | mvexpand "sourcetype"');
-})
+    //-------------------------------------------------------------------------------------
+    //    Create a textbox where a user can specify their own Sample Data Repository
+    //-------------------------------------------------------------------------------------
+    $("#repoText").html($('<label for="repo">If you have your own sample data repo, enter it here:</label><textarea id="repo" name="repo" rows="1" style="margin: 0px; width:600px; height: 30px; resize: both;">' + base_url + "</textarea>" ));
+    $("#button_repo").html($("<button class=\"btn btn-primary\">Update</button>").click(function() {
+            base_url = $("#repo").val();
+            var urlComplete = $.Deferred();
+            loadRepo();
+            //alert(base_url);
+    }));
 
 
+    //-------------------------------------------------------------------------------------
+    //    Add buttons to the page 
+    //-------------------------------------------------------------------------------------
+    //  DELETE Button
+    $("#button_delete").html($("<button class=\"btn btn-primary\">Delete Data</button>").click(function() {
+        var st = $("#sourcetypes").find(':selected').text();
+        execSearch("index=sampledata sourcetype=\"" + st + "\"" + " | delete");
+        setStatus("<b>" +st + "</b> data deleted.")
+        console.log("DELETE:  Deleted " + st + " data.");
+    }))
 
+    //  INSERT Button
+    $("#button_insert").html($("<button class=\"btn btn-primary\">Insert Data</button>").click(function() {
+        // setup the deferral so that the URL retreival completes BEFORE inserting the data
+        urlComplete = $.Deferred();
+        insertComplete = $.Deferred();
+        
+        // which sourcetype do we need?
+        var st = $("#sourcetypes").find(':selected').text();
 
-//-------------------------------------------------------------------------------------
-//    Add buttons to the page to insert/delete the data
-//-------------------------------------------------------------------------------------
-//  DELETE Button
-$("#button_delete").html($("<button class=\"btn btn-primary\">Delete Data</button>").click(function() {
-    var st = $("#sourcetypes").find(':selected').text();
-    execSearch("index=sampledata sourcetype=\"" + st + "\"" + " | delete");
-    setStatus("<b>" +st + "</b> data deleted.")
-    console.log("DELETE:  Deleted " + st + " data.");
-}))
-
-//  INSERT Button
-$("#button_insert").html($("<button class=\"btn btn-primary\">Insert Data</button>").click(function() {
-    // setup the deferral so that the URL retreival completes BEFORE inserting the data
-    urlComplete = $.Deferred();
-    insertComplete = $.Deferred();
-    
-    // which sourcetype do we need?
-    var st = $("#sourcetypes").find(':selected').text();
-
-    // go get the sample data
-    setStatus("Retrieving <b>" + st + "</b> data...")
-    queryAJAX(base_url + "data/" + getSampleFilename(st));
-    $.when(urlComplete).then(function(){
-        setStatus("Inserting <b>" + st + "</b> data.  Please be patient...")
-        // insert the data into our index
-        insertData("sampledata", payload, st);
-        $.when(insertComplete).then(function(){
-            console.log("INSERT:  Added " + st + " data.");
-            // now refresh the table
-            execSearch("index=sampledata sourcetype=\"" + st + "\"" + " | table sourcetype _time _raw | head 100");  
+        // go get the sample data
+        setStatus("Retrieving <b>" + st + "</b> data...")
+        queryAJAX(base_url + "data/" + getSampleFilename(st));
+        $.when(urlComplete).then(function(){
+            setStatus("Inserting <b>" + st + "</b> data.  Please be patient...")
+            // insert the data into our index
+            insertData("sampledata", payload, st);
+            $.when(insertComplete).then(function(){
+                console.log("INSERT:  Added " + st + " data.");
+                // now refresh the table
+                execSearch("index=sampledata sourcetype=\"" + st + "\"" + " | table sourcetype _time _raw | head 100");  
+            })
         })
+
+    }))
+
+    $("#button_summary").html($("<button class=\"btn btn-primary\">What's Loaded</button>").click(function() {
+        execSearch('index=sampledata | stats values(sourcetype) as "sourcetype" | mvexpand "sourcetype"');
+        setStatus("running search...")
+    }))
+
+    $("#button_search").html($("<button class=\"btn btn-primary\">Search</button>").click(function() {
+        var spl = $("#spl").val();
+        execSearch(spl);
+        setStatus("running search...")
+    }))
+
+    //-------------------------------------------------------------------------------------
+    //    Add status component - sometimes an insert can take a looooooong time...
+    //-------------------------------------------------------------------------------------
+    function setStatus(msg){
+        $("#status").html($("<p>" + msg + "</p>"));
+    }
+
+    //-------------------------------------------------------------------------------------
+    //    Add searchText component to enable random searches from this page
+    //-------------------------------------------------------------------------------------
+    function setSearchText(spl){
+        $("#searchText").html($('<label for="spl">Or just enter a search below</label><textarea id="spl" name="spl" rows="1" style="margin: 0px; width:700px; height: 30px; resize: both;">' + spl + "</textarea>"));
+    }
+
+    setSearchText("index=sampledata | head 100");
+
+
+
+
+
+//-------------------------------------------------------------------------------------
+//    Load a sample data repo
+//-------------------------------------------------------------------------------------
+function loadRepo() {
+    $.when(urlComplete).then(function(){
+        var options = '';
+        items = JSON.parse(sourcetype_items);
+        for (var i = 0; i < items.length; i++) {
+            options += '<option value="' + items[i].sample_filename + '">' + items[i].data_sourcetype + '</option>';
+        }
+        $("#sourcetypes").html($('<select id="st"><option value="" disabled="disabled" selected="selected">Please select...</option>' +  options + '</select>'));
+
+        $("#sourcetypes").change(function(event){
+            var st = $(event.target).find(':selected').text()
+            execSearch( "index=sampledata sourcetype=\"" + st + "\"" + " | table sourcetype _time _raw | head 100");
+            setStatus(" ")
+
+        })
+        execSearch('index=sampledata | stats values(sourcetype) as "sourcetype" | mvexpand "sourcetype"');
     })
-
-}))
-
-$("#button_summary").html($("<button class=\"btn btn-primary\">What's Loaded</button>").click(function() {
-    execSearch('index=sampledata | stats values(sourcetype) as "sourcetype" | mvexpand "sourcetype"');
-    setStatus("running search...")
-}))
-
-$("#button_search").html($("<button class=\"btn btn-primary\">Search</button>").click(function() {
-    var spl = $("#spl").val();
-    execSearch(spl);
-    setStatus("running search...")
-}))
-
-//-------------------------------------------------------------------------------------
-//    Add status component - sometimes an insert can take a looooooong time...
-//-------------------------------------------------------------------------------------
-function setStatus(msg){
-    $("#status").html($("<p>" + msg + "</p>"));
 }
 
-//-------------------------------------------------------------------------------------
-//    Add searchText component to enable random searches from this page
-//-------------------------------------------------------------------------------------
-function setSearchText(spl){
-    $("#searchText").html($('<label for="spl">Or just enter a search below</label><textarea id="spl" name="spl" rows="1" style="margin: 0px; width:800px; height: 30px;">' + spl + "</textarea>"));
-}
 
-setSearchText("index=sampledata | head 100");
 
 
 
