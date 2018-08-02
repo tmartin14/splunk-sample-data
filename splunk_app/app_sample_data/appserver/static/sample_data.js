@@ -4,8 +4,8 @@
 //
 
 
-//var base_url = "https://raw.githubusercontent.com/tmartin14/splunk-sample-data/master/";
-var base_url = "https://raw.githubusercontent.com/splunk/Essentials_Demo_Data/master/";
+var base_url = "https://raw.githubusercontent.com/tmartin14/splunk-sample-data/master/";
+//var base_url = "https://raw.githubusercontent.com/splunk/Essentials_Demo_Data/master/";
 var splunkWebHttp = new splunkjs.SplunkWebHttp();
 var service = new splunkjs.Service(splunkWebHttp);
 var indexes = service.indexes();
