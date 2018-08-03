@@ -4,8 +4,8 @@
 //
 
 
-var base_url = "https://raw.githubusercontent.com/tmartin14/splunk-sample-data/master/";
-//var base_url = "https://raw.githubusercontent.com/splunk/Essentials_Demo_Data/master/";
+//var base_url = "https://raw.githubusercontent.com/tmartin14/splunk-sample-data/master/";
+var base_url = "https://raw.githubusercontent.com/splunk/Essentials_Demo_Data/master/";
 var splunkWebHttp = new splunkjs.SplunkWebHttp();
 var service = new splunkjs.Service(splunkWebHttp);
 var indexes = service.indexes();
@@ -73,11 +73,13 @@ loadRepo();
 
     }))
 
+    //  Summary Button - Show what sourcetypes are already loaded
     $("#button_summary").html($("<button class=\"btn btn-primary\">What's Loaded</button>").click(function() {
-        execSearch('index=sampledata | stats values(sourcetype) as "sourcetype" | mvexpand "sourcetype"');
+        execSearch('| tstats values(sourcetype) as "sourcetype" where index=sampledata | mvexpand "sourcetype"');
         setStatus("running search...")
     }))
 
+    // SEARCH button
     $("#button_search").html($("<button class=\"btn btn-primary\">Search</button>").click(function() {
         var spl = $("#spl").val();
         execSearch(spl);
@@ -122,7 +124,7 @@ function loadRepo() {
             setStatus(" ")
 
         })
-        execSearch('index=sampledata | stats values(sourcetype) as "sourcetype" | mvexpand "sourcetype"');
+        execSearch('| tstats values(sourcetype) as "sourcetype" where index=sampledata | mvexpand "sourcetype"');
     })
 }
 
